@@ -1,0 +1,16 @@
+// Serviço de Serviços (lavagem, passadoria, etc.)
+// Entidade: servicos | Responsável: João
+import api from './api';
+
+const RESOURCE = '/servicos';
+
+export const servicosService = {
+  listar: () => api.get(RESOURCE),
+  buscarPorId: (id) => api.get(`${RESOURCE}/${id}`),
+  buscarPorNome: (nome) => api.get(`${RESOURCE}/nome/${nome}`),
+  criar: (dados) => api.post(RESOURCE, dados),
+  atualizar: (id, dados) => api.put(`${RESOURCE}/${id}`, dados),
+  remover: (id) => api.delete(`${RESOURCE}/${id}`),
+};
+
+export default servicosService;
