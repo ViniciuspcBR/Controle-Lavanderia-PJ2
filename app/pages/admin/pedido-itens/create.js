@@ -9,11 +9,13 @@ import Alert from '@/components/Alert';
 import pedidoItensService from '@/services/pedidoItensService';
 import pedidosService from '@/services/pedidosService';
 import tiposRoupaService from '@/services/tiposRoupaService';
+import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
 
 function CriarPedidoItem() {
   const router = useRouter();
   const [pedidos, setPedidos] = useState([]);
+  const [clientesPorId, setClientesPorId] = useState({});
   const [tipos, setTipos] = useState([]);
   const [form, setForm] = useState({
     pedido_id: '', tipo_roupa_id: '', quantidade: 1, descricao: '', status: 'recebido', valor_total: '',
@@ -27,10 +29,11 @@ function CriarPedidoItem() {
   }
 
   useEffect(() => {
-    Promise.all([pedidosService.listar(), tiposRoupaService.listar()])
-      .then(([pedidosRes, tiposRes]) => {
+    Promise.all([pedidosService.listar(), tiposRoupaService.listar(), clientesService.listar()])
+      .then(([pedidosRes, tiposRes, clientesRes]) => {
         setPedidos(pedidosRes.data);
         setTipos(tiposRes.data);
+        setClientesPorId(Object.fromEntries(clientesRes.data.map((c) => [String(c._id), c.nome])));
         if (router.query.pedido_id) {
           update('pedido_id', router.query.pedido_id);
         }
@@ -38,6 +41,11 @@ function CriarPedidoItem() {
       .catch(() => setErro('Não foi possível carregar pedidos e tipos de roupa.'))
       .finally(() => setCarregando(false));
   }, [router.query.pedido_id]);
+
+  function labelPedido(p, index) {
+    const cliente = clientesPorId[String(p.cliente_id)] || 'Cliente';
+    return `Pedido #${index + 1} — ${cliente}`;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -74,14 +82,14 @@ function CriarPedidoItem() {
                 <label htmlFor="pedido_id">Pedido</label>
                 <select id="pedido_id" required value={form.pedido_id} onChange={(e) => update('pedido_id', e.target.value)}>
                   <option value="">Selecione um pedido…</option>
-                  {pedidos.map((p) => (
+                  {pedidos.map((p, index) => (
                     <option key={p._id} value={p._id}>
-                      {String(p._id).slice(0, 8)} — {(p.status || '').replace('_', ' ')}
+                      {labelPedido(p, index)}
                     </option>
                   ))}
                 </select>
                 {pedidos.length === 0 && (
-                  <span className={uiStyles.hint}>Nenhum pedido cadastrado ainda. Cadastre um pedido primeiro.</span>
+                  <span className={uiStyles.hint}>Nenhum pedido cadastrado ainda.</span>
                 )}
               </div>
               <div className={uiStyles.field}>

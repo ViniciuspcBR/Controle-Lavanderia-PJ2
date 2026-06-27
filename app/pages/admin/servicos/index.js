@@ -54,7 +54,7 @@ function ListaServicos() {
   }
 
   const itensFiltrados = busca
-    ? itens.filter((i) => i.nome?.toLowerCase().includes(busca.toLowerCase()))
+    ? itens.filter((i) => i.nome?.toLowerCase().includes(busca.toLowerCase()) || String(i._id).includes(busca))
     : itens;
 
   return (

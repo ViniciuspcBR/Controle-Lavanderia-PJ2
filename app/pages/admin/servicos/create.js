@@ -22,8 +22,24 @@ function CriarServico() {
   async function handleSubmit(e) {
     e.preventDefault();
     setErro('');
+
+    if (!form.nome.trim()) {
+      setErro('O nome é obrigatório.');
+      return;
+    }
+
     setSalvando(true);
     try {
+      const { data: servicos } = await servicosService.listar();
+      const nomeDuplicado = servicos.some(
+        (s) => s.nome.toLowerCase().trim() === form.nome.toLowerCase().trim()
+      );
+      if (nomeDuplicado) {
+        setErro('Já existe um serviço cadastrado com esse nome.');
+        setSalvando(false);
+        return;
+      }
+
       await servicosService.criar({
         ...form,
         preco_base: parseFloat(form.preco_base) || 0,
@@ -42,7 +58,7 @@ function CriarServico() {
         <form onSubmit={handleSubmit}>
           <div className={uiStyles.formGrid}>
             <div className={`${uiStyles.field} ${uiStyles.formGridFull}`}>
-              <label htmlFor="nome">Nome</label>
+              <label htmlFor="nome">Nome <span style={{ color: 'var(--color-danger)' }}>*</span></label>
               <input id="nome" required autoFocus placeholder="Ex: Lavagem a seco"
                 value={form.nome} onChange={(e) => update('nome', e.target.value)} />
             </div>

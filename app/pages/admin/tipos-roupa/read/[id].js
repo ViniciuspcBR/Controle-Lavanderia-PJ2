@@ -31,7 +31,7 @@ function DetalheTipoRoupa() {
           <>
             <ReadField label="Nome" value={item.nome} />
             <ReadField label="Descrição" value={item.descricao} />
-            <ReadField label="ID" value={item._id} />
+            <ReadField label="ID" value={String(item._id)} />
             <div className={uiStyles.formActions}>
               <Button href={`/admin/tipos-roupa/update/${item._id}`}>Editar</Button>
               <Button variant="ghost" href="/admin/tipos-roupa">Voltar</Button>

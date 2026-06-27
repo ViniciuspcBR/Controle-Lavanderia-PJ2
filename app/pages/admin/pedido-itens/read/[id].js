@@ -40,7 +40,7 @@ function DetalhePedidoItem() {
         setTipoNome(tipo?.nome || '—');
 
         const { data: servicos } = await servicosService.listar();
-        setServicosPorId(Object.fromEntries(servicos.map((s) => [s.id, s.nome])));
+        setServicosPorId(Object.fromEntries(servicos.map((s) => [String(s._id), s.nome])));
 
         const { data: vinculados } = await pedidoItemServicosService.buscarPorItem(id).catch(() => ({ data: [] }));
         setServicosVinculados(vinculados);
@@ -57,6 +57,7 @@ function DetalhePedidoItem() {
         <Alert type="error">{erro}</Alert>
         {item && (
           <>
+            <ReadField label="ID" value={String(item._id)} />
             <ReadField label="Tipo de roupa" value={tipoNome} />
             <ReadField label="Quantidade" value={item.quantidade} />
             <div style={{ marginBottom: 18 }}>
@@ -101,7 +102,7 @@ function DetalhePedidoItem() {
                     <tbody>
                       {servicosVinculados.map((s) => (
                         <tr key={s._id}>
-                          <td>{servicosPorId[s.servico_id] || '—'}</td>
+                          <td>{servicosPorId[String(s.servico_id)] || '—'}</td>
                           <td>{formatarPreco(s.preco_unitario)}</td>
                           <td>{s.quantidade}</td>
                           <td>{formatarPreco(s.valor_total)}</td>

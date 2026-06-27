@@ -38,11 +38,11 @@ function ListaPedidoItemServicos() {
         tiposRoupaService.listar(),
       ]);
       setItens(vinculosRes.data);
-      setServicosPorId(Object.fromEntries(servicosRes.data.map((s) => [s.id, s.nome])));
+      setServicosPorId(Object.fromEntries(servicosRes.data.map((s) => [String(s._id), s.nome])));
 
-      const tiposPorId = Object.fromEntries(tiposRes.data.map((t) => [t.id, t.nome]));
+      const tiposPorId = Object.fromEntries(tiposRes.data.map((t) => [String(t._id), t.nome]));
       setItensLabel(Object.fromEntries(
-        pedidoItensRes.data.map((pi) => [pi.id, `${tiposPorId[pi.tipo_roupa_id] || 'Item'} (qtd. ${pi.quantidade})`])
+        pedidoItensRes.data.map((pi) => [String(pi._id), `${tiposPorId[pi.tipo_roupa_id] || 'Item'} (qtd. ${pi.quantidade})`])
       ));
     } catch {
       setErro('Não foi possível carregar os serviços de itens. Verifique se a API está rodando.');
@@ -57,7 +57,7 @@ function ListaPedidoItemServicos() {
     setRemovendo(true);
     try {
       await pedidoItemServicosService.remover(paraRemover._id);
-      setItens((atual) => atual.filter((i) => i.id !== paraRemover._id));
+      setItens((atual) => atual.filter((i) => i._id !== paraRemover._id));
       setParaRemover(null);
       await carregar();
     } catch {

@@ -35,6 +35,7 @@ function DetalheCliente() {
             <ReadField label="CPF/CNPJ" value={item.cpf_cnpj} />
             <ReadField label="Observações" value={item.observacoes} />
             <ReadField label="Cadastrado em" value={item.created_at && new Date(item.created_at).toLocaleString('pt-BR')} />
+            <ReadField label="ID" value={String(item._id || item.id)} />
             <div className={uiStyles.formActions}>
               <Button href={`/admin/clientes/update/${item._id}`}>Editar</Button>
               <Button variant="ghost" href="/admin/clientes">Voltar</Button>

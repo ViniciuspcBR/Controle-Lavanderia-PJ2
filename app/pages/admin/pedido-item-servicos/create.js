@@ -32,7 +32,8 @@ function CriarPedidoItemServico() {
     Promise.all([pedidoItensService.listar(), servicosService.listar(), tiposRoupaService.listar()])
       .then(([itensRes, servicosRes, tiposRes]) => {
         setPedidoItens(itensRes.data);
-        setServicos(servicosRes.data);
+        // Só exibe serviços ATIVOS
+        setServicos(servicosRes.data.filter((s) => s.ativo !== false));
         setTiposPorId(Object.fromEntries(tiposRes.data.map((t) => [String(t._id), t.nome])));
         if (router.query.pedido_item_id) {
           update('pedido_item_id', router.query.pedido_item_id);
@@ -88,7 +89,7 @@ function CriarPedidoItemServico() {
                   <option value="">Selecione um item…</option>
                   {pedidoItens.map((pi) => (
                     <option key={pi._id} value={pi._id}>
-                      {tiposPorId[String(pi.tipo_roupa_id)] || 'Item'} — qtd. {pi.quantidade}
+                      Pedido #{pedidoItens.indexOf(pi) + 1} — {tiposPorId[String(pi.tipo_roupa_id)] || 'Item'} (qtd. {pi.quantidade})
                     </option>
                   ))}
                 </select>
@@ -102,6 +103,9 @@ function CriarPedidoItemServico() {
                   <option value="">Selecione…</option>
                   {servicos.map((s) => <option key={s._id} value={s._id}>{s.nome}</option>)}
                 </select>
+                {servicos.length === 0 && (
+                  <span className={uiStyles.hint}>Nenhum serviço ativo cadastrado ainda.</span>
+                )}
               </div>
               <div className={uiStyles.field}>
                 <label htmlFor="preco_unitario">Preço unitário (R$)</label>

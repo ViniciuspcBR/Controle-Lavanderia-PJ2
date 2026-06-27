@@ -34,7 +34,7 @@ function ListaPedidoItens() {
         tiposRoupaService.listar(),
       ]);
       setItens(itensRes.data);
-      setTiposPorId(Object.fromEntries(tiposRes.data.map((t) => [t.id, t.nome])));
+      setTiposPorId(Object.fromEntries(tiposRes.data.map((t) => [String(t._id), t.nome])));
     } catch {
       setErro('Não foi possível carregar os itens de pedido. Verifique se a API está rodando.');
     } finally {
@@ -48,7 +48,7 @@ function ListaPedidoItens() {
     setRemovendo(true);
     try {
       await pedidoItensService.remover(paraRemover._id);
-      setItens((atual) => atual.filter((i) => i.id !== paraRemover._id));
+      setItens((atual) => atual.filter((i) => i._id !== paraRemover._id));
       setParaRemover(null);
       await carregar();
     } catch {

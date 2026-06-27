@@ -22,6 +22,10 @@ function ListaUsuarios() {
 
   const ehAdmin = usuarioLogado?.perfil === 'admin';
 
+  function ehVoce(item) {
+    return item._id === usuarioLogado?._id || item.email === usuarioLogado?.email;
+  }
+
   async function carregar() {
     setCarregando(true);
     setErro('');
@@ -41,7 +45,6 @@ function ListaUsuarios() {
     setRemovendo(true);
     try {
       await usuariosService.remover(paraRemover._id);
-      setItens((atual) => atual.filter((i) => i._id !== paraRemover._id));
       setParaRemover(null);
       await carregar();
     } catch {
@@ -52,12 +55,11 @@ function ListaUsuarios() {
   }
 
   const itensFiltrados = busca
-    ? itens.filter((i) => i.nome?.toLowerCase().includes(busca.toLowerCase()))
+    ? itens.filter((i) =>
+        i.nome?.toLowerCase().includes(busca.toLowerCase()) ||
+        String(i._id).includes(busca)
+      )
     : itens;
-
-  function ehVoce(item) {
-    return item._id === usuarioLogado?._id || item.email === usuarioLogado?.email;
-  }
 
   return (
     <AdminLayout
@@ -105,7 +107,9 @@ function ListaUsuarios() {
                   <td>
                     <div className={uiStyles.tableActions}>
                       <a className={uiStyles.iconBtn} href={`/admin/usuarios/read/${item._id}`} title="Ver detalhes">👁</a>
-                      <a className={uiStyles.iconBtn} href={`/admin/usuarios/update/${item._id}`} title="Editar">✎</a>
+                      {(ehAdmin || ehVoce(item)) && (
+                        <a className={uiStyles.iconBtn} href={`/admin/usuarios/update/${item._id}`} title="Editar">✎</a>
+                      )}
                       {ehAdmin && !ehVoce(item) && (
                         <button
                           className={`${uiStyles.iconBtn} ${uiStyles.iconBtnDanger}`}

@@ -40,7 +40,7 @@ function DetalhePedido() {
         setClienteNome(cliente?.nome || 'Cliente não encontrado');
 
         const { data: tipos } = await tiposRoupaService.listar();
-        setTiposPorId(Object.fromEntries(tipos.map((t) => [t.id, t.nome])));
+        setTiposPorId(Object.fromEntries(tipos.map((t) => [String(t._id), t.nome])));
 
         const { data: itensData } = await pedidoItensService.buscarPorPedido(id).catch(() => ({ data: [] }));
         setItens(itensData);

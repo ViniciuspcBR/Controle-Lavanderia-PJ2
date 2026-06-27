@@ -20,9 +20,31 @@ Desenvolvido para a disciplina de Desenvolvimento de Aplicações II — UNESC.
 - Cors
 - Swagger
 
+## Requisitos
+
+| Programa | Versão | Download |
+|----------|--------|----------|
+| Node.js | 18+ (LTS) | https://nodejs.org |
+| MongoDB Community | 8.x | https://www.mongodb.com/try/download/community |
+
+Durante a instalação do MongoDB, marcar a opção **"Install MongoDB as a Service"** para que ele inicie automaticamente com o Windows.
+
+Para verificar se o MongoDB está rodando:
+```powershell
+Get-Service -Name MongoDB
+```
+Deve aparecer `Running`.
+
 ## Como rodar
 
-### 1. Suba a API (pasta `api/`)
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/ViniciuspcBR/Controle-Lavanderia-PJ2.git
+cd Controle-Lavanderia-PJ2
+```
+
+### 2. Suba a API (pasta `api/`)
 
 ```bash
 cd api
@@ -32,7 +54,9 @@ node index.js
 
 A API sobe em `http://localhost:3000`. O Swagger fica em `http://localhost:3000/api-docs`.
 
-### 2. Suba o front (pasta `app/`)
+### 3. Suba o front (pasta `app/`)
+
+Em outro terminal:
 
 ```bash
 cd app
@@ -42,7 +66,7 @@ npm run dev -- -p 3001
 
 O front sobe em `http://localhost:3001`.
 
-### 3. Acesso
+### 4. Acesso
 
 - **E-mail:** `admin@lavanderia.com`
 - **Senha:** `123456`
@@ -52,12 +76,6 @@ Também é possível criar novas contas pela tela **/cadastro**.
 ## Como contribuir (git)
 
 ```bash
-# Clonar o repositório
-git clone https://github.com/ViniciuspcBR/Controle-Lavanderia-PJ2.git
-
-# Entrar na pasta
-cd Controle-Lavanderia-PJ2
-
 # Fazer alterações nos arquivos...
 
 # Adicionar as alterações
@@ -138,7 +156,10 @@ styles/      → CSS Modules
 
 package.json
 
-Depois de salvar, não esquece de commitar:
-powershellgit add .
-git commit -m "atualiza README"
-git push
+## Portas utilizadas
+
+| Porta | Serviço |
+|-------|---------|
+| 3000  | API (back-end) |
+| 3001  | Front-end |
+| 27017 | MongoDB |

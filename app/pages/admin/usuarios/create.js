@@ -8,9 +8,13 @@ import FormCard from '@/components/FormCard';
 import Button from '@/components/Button';
 import Alert from '@/components/Alert';
 import usuariosService from '@/services/usuariosService';
+import { useAuth } from '@/contexts/AuthContext';
 import uiStyles from '@/styles/Ui.module.css';
 
 function CriarUsuario() {
+  const { usuario: usuarioLogado } = useAuth();
+  const ehAdmin = usuarioLogado?.perfil === 'admin';
+
   const [form, setForm] = useState({ nome: '', email: '', senha: '', perfil: 'operador', ativo: true });
   const [erro, setErro] = useState('');
   const [salvando, setSalvando] = useState(false);
@@ -24,6 +28,18 @@ function CriarUsuario() {
     e.preventDefault();
     setErro('');
 
+    if (!form.nome.trim()) {
+      setErro('O nome é obrigatório.');
+      return;
+    }
+    if (!form.email.trim()) {
+      setErro('O e-mail é obrigatório.');
+      return;
+    }
+    if (!form.senha) {
+      setErro('A senha é obrigatória.');
+      return;
+    }
     if (form.senha.length < 6) {
       setErro('A senha deve ter pelo menos 6 caracteres.');
       return;
@@ -32,7 +48,20 @@ function CriarUsuario() {
     setSalvando(true);
     try {
       const { data: usuarios } = await usuariosService.listar();
-      if (usuarios.some((u) => u.email.toLowerCase() === form.email.toLowerCase())) {
+
+      const nomeDuplicado = usuarios.some(
+        (u) => u.nome.toLowerCase().trim() === form.nome.toLowerCase().trim()
+      );
+      if (nomeDuplicado) {
+        setErro('Já existe um usuário cadastrado com esse nome.');
+        setSalvando(false);
+        return;
+      }
+
+      const emailDuplicado = usuarios.some(
+        (u) => u.email.toLowerCase() === form.email.toLowerCase()
+      );
+      if (emailDuplicado) {
         setErro('Já existe um usuário com esse e-mail.');
         setSalvando(false);
         return;
@@ -43,7 +72,7 @@ function CriarUsuario() {
         nome: form.nome,
         email: form.email,
         senha_hash,
-        perfil: form.perfil,
+        perfil: ehAdmin ? form.perfil : 'operador',
         ativo: form.ativo,
       });
       router.push('/admin/usuarios');
@@ -60,27 +89,29 @@ function CriarUsuario() {
         <form onSubmit={handleSubmit}>
           <div className={uiStyles.formGrid}>
             <div className={`${uiStyles.field} ${uiStyles.formGridFull}`}>
-              <label htmlFor="nome">Nome</label>
+              <label htmlFor="nome">Nome <span style={{ color: 'var(--color-danger)' }}>*</span></label>
               <input id="nome" required autoFocus placeholder="Nome completo"
                 value={form.nome} onChange={(e) => update('nome', e.target.value)} />
             </div>
             <div className={`${uiStyles.field} ${uiStyles.formGridFull}`}>
-              <label htmlFor="email">E-mail</label>
+              <label htmlFor="email">E-mail <span style={{ color: 'var(--color-danger)' }}>*</span></label>
               <input id="email" type="email" required placeholder="email@lavanderia.com"
                 value={form.email} onChange={(e) => update('email', e.target.value)} />
             </div>
-            <div className={uiStyles.field}>
-              <label htmlFor="senha">Senha <span className={uiStyles.hint}>(mín. 6 caracteres)</span></label>
+            <div className={`${uiStyles.field} ${uiStyles.formGridFull}`}>
+              <label htmlFor="senha">Senha <span style={{ color: 'var(--color-danger)' }}>*</span> <span className={uiStyles.hint}>(mín. 6 caracteres)</span></label>
               <input id="senha" type="password" required placeholder="••••••••"
                 value={form.senha} onChange={(e) => update('senha', e.target.value)} />
             </div>
-            <div className={uiStyles.field}>
-              <label htmlFor="perfil">Perfil</label>
-              <select id="perfil" value={form.perfil} onChange={(e) => update('perfil', e.target.value)}>
-                <option value="operador">Operador</option>
-                <option value="admin">Administrador</option>
-              </select>
-            </div>
+            {ehAdmin && (
+              <div className={uiStyles.field}>
+                <label htmlFor="perfil">Perfil</label>
+                <select id="perfil" value={form.perfil} onChange={(e) => update('perfil', e.target.value)}>
+                  <option value="operador">Operador</option>
+                  <option value="admin">Administrador</option>
+                </select>
+              </div>
+            )}
             <div className={uiStyles.field}>
               <label>Status</label>
               <div className={uiStyles.checkboxRow}>

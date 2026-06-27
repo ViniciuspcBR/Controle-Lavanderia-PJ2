@@ -60,6 +60,7 @@ function DetalhePedidoItemServico() {
             <ReadField label="Preço unitário" value={formatarPreco(item.preco_unitario)} />
             <ReadField label="Quantidade" value={item.quantidade} />
             <ReadField label="Valor total" value={formatarPreco(item.valor_total)} />
+            <ReadField label="ID" value={String(item._id || item.id)} />
             <div className={uiStyles.formActions}>
               <Button href={`/admin/pedido-item-servicos/update/${item._id}`}>Editar</Button>
               <Button variant="ghost" href="/admin/pedido-item-servicos">Voltar</Button>

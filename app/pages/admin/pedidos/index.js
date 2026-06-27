@@ -33,6 +33,7 @@ function formatarData(valor) {
 function ListaPedidos() {
   const [itens, setItens] = useState([]);
   const [clientesPorId, setClientesPorId] = useState({});
+  const [busca, setBusca] = useState('');
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
   const [paraRemover, setParaRemover] = useState(null);
@@ -47,7 +48,7 @@ function ListaPedidos() {
         clientesService.listar(),
       ]);
       setItens(pedidosRes.data);
-      setClientesPorId(Object.fromEntries(clientesRes.data.map((c) => [c.id, c.nome])));
+      setClientesPorId(Object.fromEntries(clientesRes.data.map((c) => [String(c._id), c.nome])));
     } catch {
       setErro('Não foi possível carregar os pedidos. Verifique se a API está rodando.');
     } finally {
@@ -61,7 +62,6 @@ function ListaPedidos() {
     setRemovendo(true);
     try {
       await pedidosService.remover(paraRemover._id);
-      setItens((atual) => atual.filter((i) => i.id !== paraRemover._id));
       setParaRemover(null);
       await carregar();
     } catch {
@@ -71,6 +71,16 @@ function ListaPedidos() {
     }
   }
 
+  const itensFiltrados = busca
+    ? itens.filter((i) =>
+        String(i._id).includes(busca) ||
+        (i.status || '').toLowerCase().includes(busca.toLowerCase()) ||
+        (i.data_entrada && new Date(i.data_entrada).toLocaleDateString('pt-BR').includes(busca)) ||
+        (i.data_prevista && new Date(i.data_prevista).toLocaleDateString('pt-BR').includes(busca)) ||
+        (clientesPorId[String(i.cliente_id)] || '').toLowerCase().includes(busca.toLowerCase())
+      )
+    : itens;
+
   return (
     <AdminLayout
       title="Pedidos"
@@ -79,10 +89,17 @@ function ListaPedidos() {
     >
       <Alert type="error">{erro}</Alert>
 
+      <input
+        className={uiStyles.searchInput}
+        placeholder="Buscar por cliente, status, data ou ID…"
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
       <div className={uiStyles.tableWrap}>
         {carregando ? (
           <EmptyState title="Carregando…" description="Buscando pedidos cadastrados." />
-        ) : itens.length === 0 ? (
+        ) : itensFiltrados.length === 0 ? (
           <EmptyState title="Nenhum pedido encontrado" description="Cadastre o primeiro pedido para começar." />
         ) : (
           <table className={uiStyles.table}>
@@ -97,9 +114,9 @@ function ListaPedidos() {
               </tr>
             </thead>
             <tbody>
-              {itens.map((item) => (
+              {itensFiltrados.map((item) => (
                 <tr key={item._id}>
-                  <td><strong>{clientesPorId[item.cliente_id] || 'Cliente não encontrado'}</strong></td>
+                  <td><strong>Pedido #{itens.indexOf(item) + 1} — {clientesPorId[String(item.cliente_id)] || 'Cliente não encontrado'}</strong></td>
                   <td><Badge tone={TONS_STATUS[item.status] || 'neutral'}>{(item.status || '—').replace('_', ' ')}</Badge></td>
                   <td>{formatarData(item.data_entrada)}</td>
                   <td>{formatarData(item.data_prevista)}</td>

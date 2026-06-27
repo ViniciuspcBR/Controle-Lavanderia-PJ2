@@ -41,6 +41,7 @@ function DetalheUsuario() {
               <Badge tone={item.ativo ? 'ok' : 'danger'}>{item.ativo ? 'Ativo' : 'Inativo'}</Badge>
             </div>
             <ReadField label="Cadastrado em" value={item.created_at && new Date(item.created_at).toLocaleString('pt-BR')} />
+            <ReadField label="ID" value={String(item._id || item.id)} />
             <div className={uiStyles.formActions}>
               <Button href={`/admin/usuarios/update/${item._id}`}>Editar</Button>
               <Button variant="ghost" href="/admin/usuarios">Voltar</Button>

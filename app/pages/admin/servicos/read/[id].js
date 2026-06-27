@@ -42,6 +42,7 @@ function DetalheServico() {
               }}>Status</p>
               <Badge tone={item.ativo ? 'ok' : 'danger'}>{item.ativo ? 'Ativo' : 'Inativo'}</Badge>
             </div>
+            <ReadField label="ID" value={String(item._id || item.id)} />
             <div className={uiStyles.formActions}>
               <Button href={`/admin/servicos/update/${item._id}`}>Editar</Button>
               <Button variant="ghost" href="/admin/servicos">Voltar</Button>
