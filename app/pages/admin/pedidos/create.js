@@ -10,6 +10,7 @@ import pedidosService from '@/services/pedidosService';
 import clientesService from '@/services/clientesService';
 import { useAuth } from '@/contexts/AuthContext';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function CriarPedido() {
   const { usuario } = useAuth();
@@ -110,6 +111,7 @@ function CriarPedido() {
           </form>
         )}
       </FormCard>
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

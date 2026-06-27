@@ -10,6 +10,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 import pedidoItensService from '@/services/pedidoItensService';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function formatarPreco(valor) {
   const numero = Number(valor);
@@ -117,6 +118,7 @@ function ListaPedidoItens() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="Matheus Lenz" />
     </AdminLayout>
   );
 }

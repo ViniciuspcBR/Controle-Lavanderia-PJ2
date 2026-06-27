@@ -10,6 +10,7 @@ import Button from '@/components/Button';
 import Alert from '@/components/Alert';
 import servicosService from '@/services/servicosService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function DetalheServico() {
   const router = useRouter();
@@ -50,6 +51,7 @@ function DetalheServico() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

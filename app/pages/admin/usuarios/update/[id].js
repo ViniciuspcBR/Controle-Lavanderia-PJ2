@@ -11,6 +11,7 @@ import Alert from '@/components/Alert';
 import usuariosService from '@/services/usuariosService';
 import { useAuth } from '@/contexts/AuthContext';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function EditarUsuario() {
   const router = useRouter();
@@ -144,6 +145,7 @@ function EditarUsuario() {
           </form>
         )}
       </FormCard>
+      <Assinatura nome="Vinicius Cardoso" />
     </AdminLayout>
   );
 }

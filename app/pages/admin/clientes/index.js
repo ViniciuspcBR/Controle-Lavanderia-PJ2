@@ -8,6 +8,7 @@ import EmptyState from '@/components/EmptyState';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function ListaClientes() {
   const [itens, setItens] = useState([]);
@@ -116,6 +117,7 @@ function ListaClientes() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="Gabriel Borges" />
     </AdminLayout>
   );
 }

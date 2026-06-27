@@ -13,6 +13,7 @@ import clientesService from '@/services/clientesService';
 import pedidoItensService from '@/services/pedidoItensService';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function formatarPreco(valor) {
   const numero = Number(valor);
@@ -117,6 +118,7 @@ function DetalhePedido() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

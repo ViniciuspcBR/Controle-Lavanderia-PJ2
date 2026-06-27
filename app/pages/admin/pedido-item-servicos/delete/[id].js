@@ -10,6 +10,7 @@ import Alert from '@/components/Alert';
 import pedidoItemServicosService from '@/services/pedidoItemServicosService';
 import servicosService from '@/services/servicosService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function RemoverPedidoItemServico() {
   const router = useRouter();
@@ -60,6 +61,7 @@ function RemoverPedidoItemServico() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="Vilson Vinicius" />
     </AdminLayout>
   );
 }

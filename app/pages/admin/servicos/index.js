@@ -9,6 +9,7 @@ import EmptyState from '@/components/EmptyState';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import servicosService from '@/services/servicosService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function formatarPreco(valor) {
   const numero = Number(valor);
@@ -123,6 +124,7 @@ function ListaServicos() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

@@ -9,6 +9,7 @@ import Alert from '@/components/Alert';
 import pedidosService from '@/services/pedidosService';
 import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function paraInputDate(valor) {
   if (!valor) return '';
@@ -125,6 +126,7 @@ function EditarPedido() {
           </form>
         )}
       </FormCard>
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

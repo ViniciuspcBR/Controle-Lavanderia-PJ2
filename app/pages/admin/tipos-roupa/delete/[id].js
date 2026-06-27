@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import Alert from '@/components/Alert';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function RemoverTipoRoupa() {
   const router = useRouter();
@@ -55,6 +56,7 @@ function RemoverTipoRoupa() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="Vinicius Cardoso" />
     </AdminLayout>
   );
 }

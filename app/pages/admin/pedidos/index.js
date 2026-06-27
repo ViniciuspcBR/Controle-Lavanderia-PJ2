@@ -10,6 +10,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 import pedidosService from '@/services/pedidosService';
 import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 const TONS_STATUS = {
   recebido: 'neutral',
@@ -149,6 +150,7 @@ function ListaPedidos() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="João Vitor" />
     </AdminLayout>
   );
 }

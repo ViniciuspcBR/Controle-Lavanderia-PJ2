@@ -8,6 +8,7 @@ import Button from '@/components/Button';
 import Alert from '@/components/Alert';
 import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function CriarCliente() {
   const [form, setForm] = useState({ nome: '', telefone: '', email: '', cpf_cnpj: '', observacoes: '' });
@@ -121,6 +122,7 @@ function CriarCliente() {
           </div>
         </form>
       </FormCard>
+      <Assinatura nome="Gabriel Borges" />
     </AdminLayout>
   );
 }

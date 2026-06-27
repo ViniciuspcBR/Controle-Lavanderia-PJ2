@@ -11,6 +11,7 @@ import pedidoItensService from '@/services/pedidoItensService';
 import servicosService from '@/services/servicosService';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function EditarPedidoItemServico() {
   const router = useRouter();
@@ -118,6 +119,7 @@ function EditarPedidoItemServico() {
           </form>
         )}
       </FormCard>
+      <Assinatura nome="Vilson Vinicius" />
     </AdminLayout>
   );
 }

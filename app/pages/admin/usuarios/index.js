@@ -10,6 +10,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 import usuariosService from '@/services/usuariosService';
 import { useAuth } from '@/contexts/AuthContext';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function ListaUsuarios() {
   const [itens, setItens] = useState([]);
@@ -136,6 +137,7 @@ function ListaUsuarios() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="Vinicius Cardoso" />
     </AdminLayout>
   );
 }

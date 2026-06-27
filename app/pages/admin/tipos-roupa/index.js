@@ -8,6 +8,7 @@ import EmptyState from '@/components/EmptyState';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function ListaTiposRoupa() {
   const [itens, setItens] = useState([]);
@@ -115,6 +116,7 @@ function ListaTiposRoupa() {
         onCancelar={() => setParaRemover(null)}
         carregando={removendo}
       />
+      <Assinatura nome="Vinicius Cardoso" />
     </AdminLayout>
   );
 }

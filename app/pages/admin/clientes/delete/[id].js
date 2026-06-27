@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import Alert from '@/components/Alert';
 import clientesService from '@/services/clientesService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function RemoverCliente() {
   const router = useRouter();
@@ -55,6 +56,7 @@ function RemoverCliente() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="Gabriel Borges" />
     </AdminLayout>
   );
 }

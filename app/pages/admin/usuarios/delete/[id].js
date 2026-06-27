@@ -10,6 +10,7 @@ import Alert from '@/components/Alert';
 import usuariosService from '@/services/usuariosService';
 import { useAuth } from '@/contexts/AuthContext';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function RemoverUsuario() {
   const router = useRouter();
@@ -61,6 +62,7 @@ function RemoverUsuario() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="Vinicius Cardoso" />
     </AdminLayout>
   );
 }

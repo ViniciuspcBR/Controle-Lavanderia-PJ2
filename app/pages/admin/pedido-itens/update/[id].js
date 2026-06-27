@@ -10,6 +10,7 @@ import pedidoItensService from '@/services/pedidoItensService';
 import pedidosService from '@/services/pedidosService';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function EditarPedidoItem() {
   const router = useRouter();
@@ -124,6 +125,7 @@ function EditarPedidoItem() {
           </form>
         )}
       </FormCard>
+      <Assinatura nome="Matheus Lenz" />
     </AdminLayout>
   );
 }

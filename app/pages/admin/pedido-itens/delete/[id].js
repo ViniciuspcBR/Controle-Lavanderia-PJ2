@@ -10,6 +10,7 @@ import Alert from '@/components/Alert';
 import pedidoItensService from '@/services/pedidoItensService';
 import tiposRoupaService from '@/services/tiposRoupaService';
 import uiStyles from '@/styles/Ui.module.css';
+import Assinatura from '@/components/Assinatura';
 
 function RemoverPedidoItem() {
   const router = useRouter();
@@ -61,6 +62,7 @@ function RemoverPedidoItem() {
           </>
         )}
       </FormCard>
+      <Assinatura nome="Matheus Lenz" />
     </AdminLayout>
   );
 }
