@@ -76,6 +76,39 @@ router.get('/pedido/:pedido_id', async (req, res) => {
  *       404:
  *         description: Item não encontrado
  */
+
+/**
+ * @swagger
+ * /pedido-itens/status/{status}:
+ *   get:
+ *     summary: Busca itens de pedido por status
+ *     tags: [Itens do Pedido]
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Itens encontrados
+ *       404:
+ *         description: Nenhum item encontrado
+ */
+router.get('/status/:status', async (req, res) => {
+  try {
+    const resultado = await PedidoItem.find({
+      status: { $regex: req.params.status, $options: 'i' }
+    });
+    if (resultado.length === 0) {
+      return res.status(404).json({ erro: 'Nenhum item encontrado com esse status' });
+    }
+    res.json(resultado);
+  } catch (erro) {
+    res.status(500).json({ erro: erro.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const item = await PedidoItem.findById(req.params.id);

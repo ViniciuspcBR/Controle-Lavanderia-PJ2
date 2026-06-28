@@ -23,6 +23,7 @@ function ListaPedidoItemServicos() {
   const [itens, setItens] = useState([]);
   const [servicosPorId, setServicosPorId] = useState({});
   const [itensLabel, setItensLabel] = useState({});
+  const [busca, setBusca] = useState('');
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
   const [paraRemover, setParaRemover] = useState(null);
@@ -68,6 +69,14 @@ function ListaPedidoItemServicos() {
     }
   }
 
+  const itensFiltrados = busca
+    ? itens.filter((i) =>
+        (servicosPorId[String(i.servico_id)] || '').toLowerCase().includes(busca.toLowerCase()) ||
+        (itensLabel[String(i.pedido_item_id)] || '').toLowerCase().includes(busca.toLowerCase()) ||
+        String(i._id).includes(busca)
+      )
+    : itens;
+
   return (
     <AdminLayout
       title="Serviços do item do pedido"
@@ -76,10 +85,17 @@ function ListaPedidoItemServicos() {
     >
       <Alert type="error">{erro}</Alert>
 
+      <input
+        className={uiStyles.searchInput}
+        placeholder="Buscar por serviço, item ou ID…"
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
       <div className={uiStyles.tableWrap}>
         {carregando ? (
           <EmptyState title="Carregando…" description="Buscando vínculos cadastrados." />
-        ) : itens.length === 0 ? (
+        ) : itensFiltrados.length === 0 ? (
           <EmptyState title="Nenhum vínculo encontrado" description="Vincule o primeiro serviço a um item de pedido." />
         ) : (
           <table className={uiStyles.table}>
@@ -94,7 +110,7 @@ function ListaPedidoItemServicos() {
               </tr>
             </thead>
             <tbody>
-              {itens.map((item) => (
+              {itensFiltrados.map((item) => (
                 <tr key={item._id}>
                   <td>{itensLabel[item.pedido_item_id] || 'Item não encontrado'}</td>
                   <td><strong>{servicosPorId[item.servico_id] || 'Serviço não encontrado'}</strong></td>

@@ -21,6 +21,7 @@ function formatarPreco(valor) {
 function ListaPedidoItens() {
   const [itens, setItens] = useState([]);
   const [tiposPorId, setTiposPorId] = useState({});
+  const [busca, setBusca] = useState('');
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
   const [paraRemover, setParaRemover] = useState(null);
@@ -59,6 +60,14 @@ function ListaPedidoItens() {
     }
   }
 
+  const itensFiltrados = busca
+    ? itens.filter((i) =>
+        (tiposPorId[String(i.tipo_roupa_id)] || '').toLowerCase().includes(busca.toLowerCase()) ||
+        (i.status || '').toLowerCase().includes(busca.toLowerCase()) ||
+        String(i._id).includes(busca)
+      )
+    : itens;
+
   return (
     <AdminLayout
       title="Itens do pedido"
@@ -67,10 +76,17 @@ function ListaPedidoItens() {
     >
       <Alert type="error">{erro}</Alert>
 
+      <input
+        className={uiStyles.searchInput}
+        placeholder="Buscar por tipo de roupa, status ou ID…"
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
       <div className={uiStyles.tableWrap}>
         {carregando ? (
           <EmptyState title="Carregando…" description="Buscando itens de pedido cadastrados." />
-        ) : itens.length === 0 ? (
+        ) : itensFiltrados.length === 0 ? (
           <EmptyState title="Nenhum item encontrado" description="Cadastre o primeiro item de pedido para começar." />
         ) : (
           <table className={uiStyles.table}>
@@ -84,7 +100,7 @@ function ListaPedidoItens() {
               </tr>
             </thead>
             <tbody>
-              {itens.map((item) => (
+              {itensFiltrados.map((item) => (
                 <tr key={item._id}>
                   <td><strong>{tiposPorId[item.tipo_roupa_id] || 'Tipo não encontrado'}</strong></td>
                   <td>{item.quantidade}</td>

@@ -76,6 +76,37 @@ router.get('/item/:pedido_item_id', async (req, res) => {
  *       404:
  *         description: Serviço não encontrado
  */
+
+/**
+ * @swagger
+ * /pedido-item-servicos/servico/{servico_id}:
+ *   get:
+ *     summary: Busca vínculos por ID do serviço
+ *     tags: [Serviços do Item do Pedido]
+ *     parameters:
+ *       - in: path
+ *         name: servico_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Vínculos encontrados
+ *       404:
+ *         description: Nenhum vínculo encontrado
+ */
+router.get('/servico/:servico_id', async (req, res) => {
+  try {
+    const resultado = await PedidoItemServico.find({ servico_id: req.params.servico_id });
+    if (resultado.length === 0) {
+      return res.status(404).json({ erro: 'Nenhum vínculo encontrado para esse serviço' });
+    }
+    res.json(resultado);
+  } catch (erro) {
+    res.status(500).json({ erro: erro.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const servico = await PedidoItemServico.findById(req.params.id);
